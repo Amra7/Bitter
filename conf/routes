@@ -1,0 +1,31 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET    /                    controllers.StaticPagesController.index()
+GET    /about               controllers.StaticPagesController.about()
+GET    /loginToComplete     controllers.StaticPagesController.loginToComplete()
+POST   /contact             controllers.StaticPagesController.sendMail()
+GET    /contact             controllers.StaticPagesController.contact()
+
+POST   /register            controllers.UserController.create()
+GET    /register            controllers.UserController.newUser()
+GET    /@:username          controllers.UserController.show(username: String)
+GET    /@:username/edit     controllers.UserController.edit(username: String)
+POST   /@:username/edit     controllers.UserController.update(username: String)
+GET    /@:username/delete   controllers.UserController.delete(username: String)
+GET    /users               controllers.UserController.index()
+
+GET    /login               controllers.SessionController.login()
+POST   /login               controllers.SessionController.loginSubmit()
+GET    /logout              controllers.SessionController.logout()
+
+
+POST   /post/new            controllers.PostController.create()
+GET    /post/delete         controllers.PostController.delete(id: Long)
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET    /assets/*file        controllers.Assets.at(path="/public", file)
+GET    /webjars/*file       controllers.WebJarAssets.at(file)
