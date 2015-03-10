@@ -53,14 +53,29 @@ public class User extends Model {
 	@UpdatedTimestamp
 	public Date updatedAt;
 	
+	public boolean admin;
+	
+	
+	public List<User> followers;
+	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="author")
 	public List<Post> posts;
+	
+	public User(String email, String password, String username, boolean admin) {
+		this.email = email;
+		this.password = password;
+		this.username = username;
+		this.admin =  admin;
+//		hashPassword();
+		
+	}
 
 	public User(String email, String password, String username) {
 		this.email = email;
 		this.password = password;
 		this.username = username;
 		hashPassword();
+		this.admin =  false;
 	}
 
 	static Finder<Long, User> find = new Finder<Long, User>(Long.class,
