@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.*;
 
 import org.hibernate.validator.constraints.*;
 
@@ -55,7 +56,14 @@ public class User extends Model {
 	
 	public boolean admin;
 	
-	
+	@ManyToMany
+	@JoinTable(
+			name="followers",
+			joinColumns=
+		{@JoinColumn(name="user_id", referencedColumnName="id")},
+		    inverseJoinColumns=
+		{@JoinColumn(name="follower_id", referencedColumnName="id")}
+			)
 	public List<User> followers;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="author")
@@ -135,7 +143,20 @@ public class User extends Model {
 	public static void deleteUser(String username){
 		User.find(username).delete();
 	}
+	
+	public static void addFollower(long user_id, User follower){
+		User u = find.byId(user_id);
+		u.followers.add(follower);
+		u.save();
+	}
+	
 
+	/**
+	 * 
+	 * @param usernameOrEmail
+	 * @param password
+	 * @return
+	 */
 	public static User authenticate(String usernameOrEmail, String password) {
 		User u = find(usernameOrEmail);
 		if (u == null)

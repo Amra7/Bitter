@@ -88,6 +88,16 @@ public class UserController extends Controller {
 		SessionController.loginUser(u.username);
 		return redirect("/@" + u.username);
 	}
+	
+	/**
+	 * HAndles the follower relation
+	 * @param id the user the current user is following
+	 * @return redirect to to the followed users profile page
+	 */
+	public static Result follow(long id){
+		User.addFollower(id, SessionHelper.currentUser(ctx()));
+		return redirect(routes.UserController.show(User.find(id).username));
+	}
 
 	@Security.Authenticated(CurrentUserFilter.class)
 	public static Result delete(String username) {
@@ -97,5 +107,7 @@ public class UserController extends Controller {
 			User.deleteUser(username);
 		return redirect("/users");
 	}
+	
+	
 
 }
